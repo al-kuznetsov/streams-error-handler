@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: streams-error-handler
+  kafka:
+    streams:
+      application-id: streams-error-handler
+      bootstrap-servers: localhost:9093
+      properties:
+        security.protocol: SASL_PLAINTEXT
+        sasl.mechanism: PLAIN
+        sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="ivan" password="ivan-secret";
+        default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+        default:
+          deserialization:
+            exception:
+              handler: "al.demo.streamserrorhandler.handler.RoutingDeserializationExceptionHandler"
+        #   production:
+        #     exception:
+        #       handler: "de.tg.kafka.streams.dead.letter.errorhandling.DeadLetterProductionExceptionHandler"
+topics:
+  input: "demo_input"
+  output: "demo_output"
+  wrong: "wrong_topic"
