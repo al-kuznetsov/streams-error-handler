@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import al.demo.streamserrorhandler.config.TopicsConfig;
-import al.demo.streamserrorhandler.processor.ResponseSinkProcessor;
+import al.demo.streamserrorhandler.processor.ResponseSinkProcessorSupplier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,7 +18,7 @@ public class StreamTopology {
     private final TopicsConfig topicsConfig;
 
     @Autowired
-    public void buildStreams(StreamsBuilder streamsBuilder) {
+    public void buildStreams(StreamsBuilder streamsBuilder, ResponseSinkProcessorSupplier responseSinkProcessorSupplier) {
         KStream<String, String> input = streamsBuilder.stream(topicsConfig.input());
 
         input
@@ -31,7 +31,7 @@ public class StreamTopology {
                 .branch((k, v) -> v.contains("typeE"),
                         Branched.withConsumer(ks -> ks
                                 .peek((k, v) -> log.info("Branched record to WRONG topic k = {}, v = {}", k, v))
-                                .process(ResponseSinkProcessor::new)))
+                                .process(responseSinkProcessorSupplier)))
                 .noDefaultBranch();
 
     }

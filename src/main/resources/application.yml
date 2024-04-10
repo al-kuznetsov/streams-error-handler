@@ -8,7 +8,7 @@ spring:
       properties:
         security.protocol: SASL_PLAINTEXT
         sasl.mechanism: PLAIN
-        sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="ivan" password="ivan-secret";
+        sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="nana" password="nana-secret";
         default.key.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
         default.value.serde: org.apache.kafka.common.serialization.Serdes$StringSerde
         default:
